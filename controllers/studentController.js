@@ -72,8 +72,29 @@ const getDataById = async (req, res) => {
   }
 };
 
+//get data by ID and update
+const updateData = async (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  try {
+    await studentModel.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      { $set: body }
+    );
+
+    res.status(200).json({
+      message: responseDefault.UPDATED_DATA,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   addData,
   getData,
   getDataById,
+  updateData,
 };
