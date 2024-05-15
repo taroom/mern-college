@@ -62,6 +62,7 @@ const getDataById = async (req, res) => {
         });
       }
     }
+
     const response = await studentModel.findById(req.params.id);
     res.status(200).json({
       message: "Data ketemu",
@@ -77,6 +78,19 @@ const updateData = async (req, res) => {
   const id = req.params.id;
   const body = req.body;
   try {
+    if (id.length !== 24) {
+      return res.status(404).json({
+        message: responseDefault.ID_NOT_FOUND_OVER,
+      });
+    } else {
+      const foundIdFirst = await studentModel.findOne({ _id: id });
+      if (!foundIdFirst) {
+        return res.status(404).json({
+          message: responseDefault.ID_NOT_FOUND,
+        });
+      }
+    }
+
     await studentModel.findByIdAndUpdate(
       {
         _id: id,
@@ -96,6 +110,19 @@ const updateData = async (req, res) => {
 const deleteData = async (req, res) => {
   const id = req.params.id;
   try {
+    if (id.length !== 24) {
+      return res.status(404).json({
+        message: responseDefault.ID_NOT_FOUND_OVER,
+      });
+    } else {
+      const foundIdFirst = await studentModel.findOne({ _id: id });
+      if (!foundIdFirst) {
+        return res.status(404).json({
+          message: responseDefault.ID_NOT_FOUND,
+        });
+      }
+    }
+
     await studentModel.findByIdAndDelete({ _id: id });
     // bisa juga
     // await studentModel.findByIdAndDelete(id);
