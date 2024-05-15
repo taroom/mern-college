@@ -92,9 +92,26 @@ const updateData = async (req, res) => {
   }
 };
 
+//delete data
+const deleteData = async (req, res) => {
+  const id = req.params.id;
+  try {
+    await studentModel.findByIdAndDelete({ _id: id });
+    // bisa juga
+    // await studentModel.findByIdAndDelete(id);
+    // await studentModel.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      message: responseDefault.DELETED_DATA,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   addData,
   getData,
   getDataById,
   updateData,
+  deleteData,
 };
