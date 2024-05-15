@@ -47,7 +47,33 @@ const getData = async (req, res) => {
   }
 };
 
+//lihat data by ID
+const getDataById = async (req, res) => {
+  try {
+    if (req.params.id.length !== 24) {
+      return res.status(404).json({
+        message: responseDefault.ID_NOT_FOUND_OVER,
+      });
+    } else {
+      const foundIdFirst = await studentModel.findOne({ _id: req.params.id });
+      if (!foundIdFirst) {
+        return res.status(404).json({
+          message: responseDefault.ID_NOT_FOUND,
+        });
+      }
+    }
+    const response = await studentModel.findById(req.params.id);
+    res.status(200).json({
+      message: "Data ketemu",
+      data: response,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   addData,
   getData,
+  getDataById,
 };
